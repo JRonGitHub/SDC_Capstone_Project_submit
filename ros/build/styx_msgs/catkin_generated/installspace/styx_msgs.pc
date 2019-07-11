@@ -1,0 +1,8 @@
+prefix=/home/guilins/catkin_ws/src/SDC_Capstone_Project/ros/install
+
+Name: styx_msgs
+Description: Description of styx_msgs
+Version: 0.0.0
+Cflags: -I/home/guilins/catkin_ws/src/SDC_Capstone_Project/ros/install/include
+Libs: -L/home/guilins/catkin_ws/src/SDC_Capstone_Project/ros/install/lib 
+Requires: 

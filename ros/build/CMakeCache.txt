@@ -292,8 +292,14 @@ cpp_common_DIR:PATH=/opt/ros/kinetic/share/cpp_common/cmake
 //The directory containing a CMake configuration file for cv_bridge.
 cv_bridge_DIR:PATH=/opt/ros/kinetic/share/cv_bridge/cmake
 
+//Value Computed by CMake
+dbw_mkz_msgs_BINARY_DIR:STATIC=/home/guilins/catkin_ws/src/SDC_Capstone_Project/ros/build/dbw_mkz_msgs
+
 //The directory containing a CMake configuration file for dbw_mkz_msgs.
-dbw_mkz_msgs_DIR:PATH=/opt/ros/kinetic/share/dbw_mkz_msgs/cmake
+dbw_mkz_msgs_DIR:PATH=/home/guilins/catkin_ws/src/SDC_Capstone_Project/ros/devel/share/dbw_mkz_msgs/cmake
+
+//Value Computed by CMake
+dbw_mkz_msgs_SOURCE_DIR:STATIC=/home/guilins/catkin_ws/src/SDC_Capstone_Project/ros/src/dbw_mkz_msgs
 
 //The directory containing a CMake configuration file for dynamic_reconfigure.
 dynamic_reconfigure_DIR:PATH=/opt/ros/kinetic/share/dynamic_reconfigure/cmake
@@ -614,7 +620,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=11
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=12
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

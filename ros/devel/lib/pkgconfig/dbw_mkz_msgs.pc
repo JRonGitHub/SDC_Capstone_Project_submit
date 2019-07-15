@@ -1,0 +1,8 @@
+prefix=/home/guilins/catkin_ws/src/SDC_Capstone_Project/ros/devel
+
+Name: dbw_mkz_msgs
+Description: Description of dbw_mkz_msgs
+Version: 1.0.12
+Cflags: -I/home/guilins/catkin_ws/src/SDC_Capstone_Project/ros/devel/include
+Libs: -L/home/guilins/catkin_ws/src/SDC_Capstone_Project/ros/devel/lib 
+Requires: message_runtime std_msgs geometry_msgs

@@ -36,10 +36,11 @@ class WaypointUpdater(object):
         self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane, queue_size=1)
 
         self.pose=None
+        self.base_lane=None
         self.waypoints_2d=None
         self.waypoints_tree=None
         self.base_waypoints=None
-
+        self.stopline_wp_idx=-1
         #rospy.spin()
         self.loop()
 
@@ -47,9 +48,8 @@ class WaypointUpdater(object):
     def loop(self):
         rate=rospy.Rate(50)
         while not rospy.is_shutdown():
-            if self.pose and self.base_waypoints:
-                closest_wp_indx=self.get_closest_waypoint_indx()
-                self.publish_waypoints(closest_wp_indx)
+            if self.pose and self.base_lane:
+                self.publish_waypoints()
             rate.sleep()
 
     #define the function to get closest waypoints index
@@ -77,15 +77,11 @@ class WaypointUpdater(object):
         final_lane=self.generate_lane()
         self.final_waypoints_pub.publish(final_lane)
         
-
-
-
     def pose_cb(self, msg):
         self.pose=msg
 
     def waypoints_cb(self, waypoints):
-        # TODO: Implement
-        self.base_waypoints=waypoints
+        self.base_lane=waypoints
         if not self.waypoints_2d:
             self.waypoints_2d=[[waypoint.pose.pose.position.x, waypoint.pose.pose.position.y] for waypoint in waypoints.waypoints]
             self.waypoints_tree=KDTree(self.waypoints_2d)
@@ -94,7 +90,7 @@ class WaypointUpdater(object):
         lane=Lane()
         closest_idx=self.get_closest_waypoint_indx()
         farthest_wp_idx=closest_idx+LOOKAHEAD_WPS
-        base_waypoints=self.base_waypoints.waypoints[closest_idx:closest_idx+LOOKAHEAD_WPS]
+        base_waypoints=self.base_lane.waypoints[closest_idx:closest_idx+LOOKAHEAD_WPS]
         if self.stopline_wp_idx==-1 or (self.stopline_wp_idx>=farthest_wp_idx):
             lane.waypoints=base_waypoints
         else:
@@ -107,10 +103,10 @@ class WaypointUpdater(object):
         for i, wp in enumerate(waypoints):
             p=Waypoint()
             p.pose=wp.pose
-            stopline_idx=max(self.stopline_wp_idx-closest_wp_idx-2, 0)
+            stopline_idx=max(self.stopline_wp_idx-closest_wp_idx-3, 0)
             dist=self.distance(waypoints, i, stopline_idx)
             vel=math.sqrt(2*MAX_DECEL*dist)    # change it to s curve smoothly?? 
-            if vel<1.0:
+            if vel<0.5:
                 vel=0
             p.twist.twist.linear.x=min(vel, wp.twist.twist.linear.x)
             temp.append(p)

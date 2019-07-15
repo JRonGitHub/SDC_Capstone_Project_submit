@@ -30,6 +30,8 @@ class Controller(object):
         self.wheel_radius=wheel_radius
 
     def control(self, linear_vel, angular_vel, current_vel, dbw_enabled):
+        # TODO: Change the arg, kwarg list to suit your needs
+        # Return throttle, brake, steer
         if not dbw_enabled:
             self.throttle_controller.reset()
             return 0, 0, 0
@@ -48,7 +50,7 @@ class Controller(object):
 
         if linear_vel==0 and current_vel<0.1 :
             throttle=0
-            brake=700
+            brake=400
         elif throttle<0.1 and vel_error<0 :
             throttle=0
             decel=max(vel_error, self.decel_limit)

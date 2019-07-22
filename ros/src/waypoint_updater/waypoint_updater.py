@@ -106,7 +106,7 @@ class WaypointUpdater(object):
             stopline_idx=max(self.stopline_wp_idx-closest_wp_idx-3, 0)
             dist=self.distance(waypoints, i, stopline_idx)
             vel=math.sqrt(2*MAX_DECEL*dist)    # change it to s curve smoothly?? 
-            if vel<0.5:
+            if vel<1.0:
                 vel=0
             p.twist.twist.linear.x=min(vel, wp.twist.twist.linear.x)
             temp.append(p)
@@ -114,7 +114,6 @@ class WaypointUpdater(object):
 
 
     def traffic_cb(self, msg):
-        # TODO: Callback for /traffic_waypoint message. Implement
         self.stopline_wp_idx=msg.data
 
     def obstacle_cb(self, msg):

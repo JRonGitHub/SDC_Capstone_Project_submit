@@ -33,6 +33,7 @@ class WaypointUpdater(object):
         rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
 
         rospy.Subscriber('/traffic_waypoint', Int32, self.traffic_cb )
+        #rospy.Subscriber('/vehicle/obstacle', PoseStamped, self.obstacle_cb)
         self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane, queue_size=1)
 
         self.pose=None
@@ -103,10 +104,10 @@ class WaypointUpdater(object):
         for i, wp in enumerate(waypoints):
             p=Waypoint()
             p.pose=wp.pose
-            stopline_idx=max(self.stopline_wp_idx-closest_wp_idx-3, 0)
+            stopline_idx=max(self.stopline_wp_idx-closest_wp_idx-8, 0)
             dist=self.distance(waypoints, i, stopline_idx)
-            vel=math.sqrt(2*MAX_DECEL*dist)    # change it to s curve smoothly?? 
-            if vel<1.0:
+            vel=math.sqrt(2*MAX_DECEL*dist)    #decelerate the car at max acceleration
+            if vel<1.5:
                 vel=0
             p.twist.twist.linear.x=min(vel, wp.twist.twist.linear.x)
             temp.append(p)
@@ -117,7 +118,7 @@ class WaypointUpdater(object):
         self.stopline_wp_idx=msg.data
 
     def obstacle_cb(self, msg):
-        # TODO: Callback for /obstacle_waypoint message. We will implement it later
+        # Callback for /obstacle_waypoint message. We will implement it later
         pass
 
     def get_waypoint_velocity(self, waypoint):

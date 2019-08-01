@@ -124,12 +124,15 @@ class TLDetector(object):
                     diff = d
                     closest_light = light
                     line_wp_idx = temp_wp_idx
-
+        if self.pose:
+            current_wp=self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
+        else:
+            current_wp=-1
         # if we have found a closest light to monitor, then determine the stop line position of this light
         if closest_light and line_wp_idx:
             state = self.get_light_state(closest_light)
             if (self.process_count % LOGGING_THROTTLE_FACTOR) == 0:
-                rospy.logwarn("DETECT: line_wp_idx={}, state={}".format(line_wp_idx, self.to_string(state)))
+                rospy.logwarn("DETECT: line_wp_idx={}, current_wp={}, state={}".format(line_wp_idx, current_wp, self.to_string(state)))
             rospy.logdebug('Closest light idx: {} \t state: {}'.format(line_wp_idx, state))
 
         return line_wp_idx, state
@@ -175,6 +178,8 @@ class TLDetector(object):
             out = "yellow"
         elif state == TrafficLight.RED:
             out = "red"
+        elif state == TrafficLight.UNKNOWN:
+            out = "unknown"
         return out
 
 

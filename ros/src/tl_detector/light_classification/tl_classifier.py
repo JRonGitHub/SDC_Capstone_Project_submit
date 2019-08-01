@@ -5,6 +5,7 @@ import tensorflow as tf
 import cv2
 import numpy as np
 import os
+import yaml
 
 NUM_CLASSES = 4
 MIN_SCORE_THR = .4
@@ -18,8 +19,11 @@ class TLClassifier(object):
 
         # Choose model for simulator or for real driving
         # if self.is_real:
-        if 0:
-            model_name = 'ssd_model_10000_tf_1_4'
+        config_string = rospy.get_param("/traffic_light_config")
+        self.config = yaml.load(config_string)
+        self.is_real=self.config['is_site']
+        if self.is_real:
+            model_name = 'real_ssd_model_tf_1_4'
             rospy.loginfo("In real site environment...use {}/{}".format(
                 model_name, graph_to_load))
         else:
@@ -81,7 +85,7 @@ class TLClassifier(object):
         classes = np.squeeze(det_classes).astype(np.int32)
         boxes = np.squeeze(det_boxes)
 
-        total_scores = { "Red": 0, "Yellow": 0, "Green": 0, "Unknown": 0}
+        total_scores = { "Red": 0, "Yellow": 0, "Green": 0, "off": 0}
         
         count = 0
         for i in range(0, num):
@@ -93,7 +97,7 @@ class TLClassifier(object):
                     total_scores[class_name] += score
 
         max_score = 0
-        category = 'Unknown'
+        category = 'off'
         print(total_scores)
         for key in total_scores.keys():
             if count > 0:
@@ -109,6 +113,9 @@ class TLClassifier(object):
             self.light_state = TrafficLight.YELLOW
         elif category == 'Green':
             self.light_state = TrafficLight.GREEN
-        
+        elif category=='off':
+            self.light_state = TrafficLight.UNKNOWN
+        if category=='off':
+            category='Unknown'
         rospy.loginfo("TL Classifier ----> Detected TL state:" + category)
         return self.light_state

@@ -18,6 +18,7 @@ STATE_COUNT_THRESHOLD = 2
 TEST_MODE_ENABLED = False
 SAVE_IMAGES = False
 LOGGING_THROTTLE_FACTOR = 5  # Only log at this rate (1 / Hz)
+PROCESS_FRAME_RATE = 3 # process each third frame
 
 
 class TLDetector(object):
@@ -43,6 +44,9 @@ class TLDetector(object):
         self.last_state = TrafficLight.UNKNOWN
         self.last_wp = -1
         self.state_count = 0
+        self.last_processed_wp = -1
+        self.last_processed_state = TrafficLight.UNKNOWN
+        self.currentFrame = 1
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
@@ -77,7 +81,14 @@ class TLDetector(object):
         """
         self.has_image = True
         self.camera_image = msg
-        light_wp, state = self.process_traffic_lights()
+        if (self.currentFrame % PROCESS_FRAME_RATE == 1):
+            light_wp, state = self.process_traffic_lights()
+            self.last_processed_wp = light_wp
+            self.last_processed_state = state
+        else:
+            light_wp = self.last_processed_wp
+            state = self.last_processed_state
+        self.currentFrame += 1
         rospy.loginfo("TL Detector ----> image processed: waypoint= " + str(light_wp) + ", state=" + str(state))
         '''
         Publish upcoming red lights at camera frequency.

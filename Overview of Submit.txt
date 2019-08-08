@@ -15,3 +15,5 @@ I have tried various models and dataset arrangements. However despite this submi
 (My teammate has used a different approach successfully for this submission: Using two classifiers instead of only one.)
 
 (Two or so snapshots of "behind the scenes" work done can be found in the history of my other repo for this project as well: https://github.com/JRonGitHub/SDC_Capstone_Project.git)
+
+I also developed a few preprocessing pipeline files to handle the data and to help get a dataset that helps generalizing well. 

@@ -1,0 +1,17 @@
+Dear reader,
+
+this is an overview of my experience with this Capstone project: 
+
+For me it was a very interesting project: 
+
+It was almost like more than one project: The ROS library was new to me, so was the Object Detection API part of tensorflow for the traffic light classification. I thought of the latter in respect to this project to be very intriguing as it is touching both Self-Driving Cars and Deep Learning. 
+
+Also I am very happy for my teammates who have been both super friendly and professional at the same time :) This was a great experience to discuss our next ideas, code etc. on our teams slack channel with you/them.
+
+My main effort to get the classifier to generalize enough to work in both environments has shown better results with the latest model (using all 3 Bosch, LARA and Udacity Simulator and testarea data).
+
+I have tried various models and dataset arrangements. However despite this submit I am currently still working on a model, I haven't tried yet (YOLO). I further improved the dataset based on the results from the above mentioned traffic light classifier implementation.
+
+(My teammate has used a different approach successfully for this submission: Using two classifiers instead of only one.)
+
+(Two or so snapshots of "behind the scenes" work done can be found in the history of my other repo for this project as well: https://github.com/JRonGitHub/SDC_Capstone_Project.git)

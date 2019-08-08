@@ -1,0 +1,36 @@
+This model is trained on a relatively small but very balanced, (handpicked) dataset from mainly 3 different datasets:
+
+LARA dataset from trafficlights in France
+Bosch dataset from trafficlights in California
+Udacity Simulator and Lot data
+(for further references, citations etc. see below)
+
+Each has more or less a third of the training data here, the lot dataset was artificially inflated, by flipping images (and labels of course as well)
+
+The graph works pretty good on the test video in the Capstone Object Detection Workspace, even captures traffic light before I consciously saw it at the right spot. However it sometimes detects traffic lights that aren't there. 
+
+Currently in process of getting even better performance with a further improved dataset and different model currently, despite having submitted the project already. 
+
+
+
+Bosch Traffic-Light Dataset:
+(I have used a fraction of their train dataset for this model.)
+source: https://hci.iwr.uni-heidelberg.de/node/6132
+
+Bosch Traffic-Light Dataset Citation:
+@inproceedings{BehrendtNovak2017ICRA,
+  title={A Deep Learning Approach to Traffic Lights: Detection, Tracking, and Classification},
+  author={Behrendt, Karsten and Novak, Libor},
+  booktitle={Robotics and Automation (ICRA), 2017 IEEE International Conference on},
+  organization={IEEE}
+}
+
+
+LARA Dataset:
+source: http://www.lara.prd.fr/benchmarks/trafficlightsrecognition
+
+(The for this project handpicked data is only a fraction of the LARA Dataset)
+These were coming from the Robotics Centre of Mines ParisTech and are publicly available at: http://www.lara.prd.fr/benchmarks/trafficlightsrecognition
+
+
+The rest of the data is traffic lights data from the Udacity Simulator and Testareas.

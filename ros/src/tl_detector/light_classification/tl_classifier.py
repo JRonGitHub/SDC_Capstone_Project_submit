@@ -1,5 +1,5 @@
 from styx_msgs.msg import TrafficLight
-from pathlib import Path
+#from pathlib import Path
 import rospy
 import tensorflow as tf
 import cv2
@@ -12,7 +12,7 @@ MIN_SCORE_THR = .4
 
 class TLClassifier(object):
     def __init__(self):
-        #TODO load classifier
+        # load classifier
         self.light_state = TrafficLight.UNKNOWN
 
         graph_to_load = 'frozen_inference_graph.pb'
@@ -31,8 +31,9 @@ class TLClassifier(object):
             rospy.loginfo("In simulator environment...use {}/{}".format(
                 model_name, graph_to_load))
 
-        p = Path(__file__).parents[4]
-        model_path = str(p) + '/traffic_light_classifier/' + model_name + '/' + graph_to_load
+        #p = Path(__file__).parents[4]
+        #model_path = str(p) + '/traffic_light_classifier/' + model_name + '/' + graph_to_load
+        model_path = '../../../traffic_light_classifier/' + model_name + '/' + graph_to_load
         rospy.logwarn("model_path={}".format(model_path))
 
         # Load saved model

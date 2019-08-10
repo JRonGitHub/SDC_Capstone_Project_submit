@@ -31,14 +31,21 @@ class Controller(object):
 
     def control(self, linear_vel, angular_vel, current_vel, dbw_enabled):
         # Return throttle, brake, steer
+        rospy.logwarn("Angular vel: {0}".format(angular_vel))
+        rospy.logwarn("Target vel = linear_vel: {0}".format(linear_vel))
+        rospy.logwarn("Target angular vel = angular_vel: {0}".format(angular_vel))
+        rospy.logwarn("Current velocity: {0}".format(current_vel))
+        rospy.logwarn("Filtered vel: {}".format(self.vel_lpf.get()))
         if not dbw_enabled:
             self.throttle_controller.reset()
             return 0, 0, 0
         current_vel=self.vel_lpf.filt(current_vel)
 
         steering=self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel)
+        rospy.logwarn("yaw_controller steering : {}".format(steering))
 
         vel_error=linear_vel-current_vel
+        rospy.logwarn("vel_error : {}".format(vel_error))
         self.last_vel=current_vel
         current_time=rospy.get_time()
         sample_time=current_time-self.last_time
@@ -46,6 +53,7 @@ class Controller(object):
         self.last_time=current_time
 
         throttle=self.throttle_controller.step(vel_error, sample_time)
+        rospy.logwarn("throttle by PID controller : {}".format(throttle))
         brake=0
 
         if linear_vel==0 and current_vel<1.5 :
@@ -57,5 +65,5 @@ class Controller(object):
             brake=abs(decel)*self.vehicle_mass*self.wheel_radius
             #brake=min(abs(decel)*self.vehicle_mass*self.wheel_radius, Max_Brake)
             
-    
+        rospy.logwarn("*OUTPUT**throttle{} **brake {} **steering {}".format(throttle, brake, steering))
         return throttle, brake, steering

@@ -118,6 +118,6 @@ class TLClassifier(object):
             self.light_state = TrafficLight.UNKNOWN
         if category=='off':
             category='Unknown'
-        rospy.loginfo("TL Classifier ----> Detected TL state:" + category)
-        rospy.logwarn("****current count****{} *****class_name** {}".format(count,class_name))
+        #rospy.logwarn("****current count****{} *****class_name** {}".format(count,category))
+        rospy.loginfo("TL Classifier ----> Detected TL state:" + category+" "+str(count)+" detected")
         return self.light_state

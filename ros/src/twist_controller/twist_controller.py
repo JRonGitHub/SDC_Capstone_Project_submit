@@ -49,20 +49,20 @@ class Controller(object):
         self.last_vel=current_vel
         current_time=rospy.get_time()
         sample_time=current_time-self.last_time
-        vel_decel=vel_error/sample_time
+        #vel_decel=vel_error/sample_time #variable never used
         self.last_time=current_time
 
         throttle=self.throttle_controller.step(vel_error, sample_time)
         rospy.logwarn("throttle by PID controller : {}".format(throttle))
         brake=0
 
-        if linear_vel==0 and current_vel<1.5 :
+        if linear_vel==0 and current_vel<0.1 : #1.5 might be an issue and might keep car stuck 
             throttle=0
             brake=700       # update to hold the vehicle at stop
         elif throttle<0.1 and vel_error<0 :
             throttle=0
             decel=max(vel_error, self.decel_limit)
-            brake=abs(decel)*self.vehicle_mass*self.wheel_radius
+            brake=abs(decel)*self.vehicle_mass*self.wheel_radius #Torque N*m Newton Metre 
             #brake=min(abs(decel)*self.vehicle_mass*self.wheel_radius, Max_Brake)
             
         rospy.logwarn("*OUTPUT**throttle{} **brake {} **steering {}".format(throttle, brake, steering))

@@ -100,10 +100,10 @@ class WaypointUpdater(object):
         for i, wp in enumerate(waypoints):
             p=Waypoint()
             p.pose=wp.pose
-            stopline_idx=max(self.stopline_wp_idx-closest_wp_idx-8, 0)
-            dist=self.distance(waypoints, i, stopline_idx)
+            stopline_idx=max(self.stopline_wp_idx-closest_wp_idx-3, 0) #-8
+            dist=self.distance(waypoints, i, stopline_idx) # distance will return 0 if i is bigger than the stopindex  (sums up waypoint distances between the waypoints)
             vel=math.sqrt(2*MAX_DECEL*dist)    #decelerate the car at max acceleration
-            if vel<1.5:
+            if vel<1.: #1.5
                 vel=0
             p.twist.twist.linear.x=min(vel, wp.twist.twist.linear.x)
             temp.append(p)
